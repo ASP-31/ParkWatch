@@ -4,7 +4,7 @@ A lightweight, crowd-sourced web application designed to help communities report
 
 ---
 
-## ✨ Planned Features
+## ✨ Features
 
 ### 📸 One-Tap Camera Capture
 - Opens the device's rear camera on supported mobile browsers.
@@ -27,20 +27,20 @@ A lightweight, crowd-sourced web application designed to help communities report
 
 ---
 
-## 🛠 Tech Stack (Planned)
+## 🛠 Tech Stack
 
 | Layer | Technology |
 |--------|------------|
-| Frontend | React.js / Next.js |
+| Frontend | Next.js 14 (App Router) |
 | Styling | Tailwind CSS |
-| Backend | Supabase **or** Firebase (choose one) |
-| Database | PostgreSQL (Supabase) / Cloud Firestore (Firebase) |
-| Storage | Supabase Storage / Firebase Storage |
-| Authentication | Supabase Auth / Firebase Authentication |
+| Backend | Supabase |
+| Database | PostgreSQL (Supabase) |
+| Storage | Supabase Storage |
+| Auth | Supabase Auth (anonymous) |
 
 ---
 
-## 📂 Planned Project Structure
+## 📂 Project Structure
 
 ```text
 ParkWatch/
@@ -52,98 +52,68 @@ ParkWatch/
 │   │   ├── CameraCapture.jsx      # Camera capture component
 │   │   ├── ReportForm.jsx         # Report submission form
 │   │   └── ViolationFeed.jsx      # Community dashboard
+│   ├── app/
+│   │   ├── page.tsx               # Home page (App Router)
+│   │   └── layout.tsx             # Root layout
 │   ├── config/
-│   │   └── backend.js             # Firebase/Supabase configuration
+│   │   └── supabase.js            # Supabase client configuration
 │   ├── App.jsx
-│   └── index.css
-├── .env.local
+│   └── index.css                  # Tailwind directives
+│
+├── .env.local                       # local dev env (gitignored)
+├── .env.example                     # template (commit this)
 ├── package.json
+├── tailwind.config.js
+├── postcss.config.js
+├── tsconfig.json
+├── next-env.d.ts
 └── README.md
 ```
 
 ---
 
-## 🚀 Getting Started (After Initialization)
+## 🚀 Getting Started
 
 ### 1. Prerequisites
 - Node.js (v18 or later)
 - npm or Yarn
 
-### 2. Initialize the Project
-```bash
-# Choose one:
-npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
-# OR
-npm init -y && npm install next react react-dom && npm install -D typescript @types/react @types/node tailwindcss
-```
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 4. Configure Environment Variables
-Create a `.env.local` file in the project root. **Pick one backend:**
-
-**Supabase:**
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
-NEXT_PUBLIC_STORAGE_BUCKET=your_supabase_bucket
-```
-
-**Firebase:**
-```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_STORAGE_BUCKET=your_firebase_bucket
-```
-
-### 5. Start the Development Server
+### 3. Run the Development Server
 ```bash
 npm run dev
 ```
 Open `http://localhost:3000`
 
----
+**Network access** (test on phone same Wi-Fi):
+```
+http://<your-local-ip>:3000
+```
 
-## 📱 Mobile Testing
-- Run dev server, access via `http://<local-ip>:3000` from phone on same Wi-Fi
-- Camera API requires HTTPS or localhost — works on local LAN IP in dev
+### 4. Environment Variables
+Your `.env.local` already contains the Supabase config. Verify:
 
----
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://atnpdrgbofkmracfsybe.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_G8nhCJiBAnnBRfVse6u1oA_ZLQTgtU0
+NEXT_PUBLIC_STORAGE_BUCKET=violations
+```
 
-## 📖 How It Works (Planned Flow)
-1. Open ParkWatch.
-2. Capture a photo of the obstructing vehicle.
-3. Enter the vehicle's license plate number.
-4. Add a short location description.
-5. Submit the report.
-6. The report instantly appears on the community dashboard.
+The `SUPABASE_SECRET_KEY` is **not** needed for the client — only use it in server API routes if required.
 
----
-
-## 🎯 MVP Goals
-- Fast reporting process
-- Community-driven reporting
-- Mobile-first experience
-- Public transparency
-- Simple and intuitive UI
-
----
-
-## 🔮 Future Roadmap (Post-MVP)
-- **ALPR (OCR)**: Automatic license plate recognition
-- **GPS Geotagging**: Auto-capture location, interactive map
-- **Anonymous Alerts**: Notify owners via WhatsApp/SMS/Email
-- **Community Verification**: Users confirm reports, reduce spam
-- **Admin Dashboard**: Moderation, analytics
-- **Search & Filters**: By vehicle, location, date
+### 5. Mobile Testing
+- Connect laptop and phone to the same Wi-Fi
+- Access via `http://<local-ip>:3000`
+- Camera API works on local LAN IP in dev
 
 ---
 
 ## 🤝 Contributing
-Contributions welcome once the project is initialized!
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/new-feature`
 3. Commit changes: `git commit -m "Add new feature"`
@@ -153,8 +123,13 @@ Contributions welcome once the project is initialized!
 ---
 
 ## 📜 License
+
 This project is licensed under the MIT License.
 
 ---
+
+## 🤝 Support
+
+If you found this project helpful, please consider giving it a ⭐ on GitHub.
 
 Made with ❤️ to help build safer, obstruction-free streets through community participation.

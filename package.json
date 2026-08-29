@@ -1,0 +1,37 @@
+{
+  "name": "parkwatch",
+  "version": "1.0.0",
+  "description": "A lightweight, crowd-sourced web application designed to help communities report illegal street parking and road obstructions. Users can quickly capture a photo of a vehicle blocking traffic, enter its license plate number, and submit a report to a public community dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ASP-31/ParkWatch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ASP-31/ParkWatch/issues"
+  },
+  "homepage": "https://github.com/ASP-31/ParkWatch#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
+    "next": "^16.3.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "@types/react": "19.2.18",
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "typescript": "7.0.2"
+  }
+}

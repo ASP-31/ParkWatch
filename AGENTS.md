@@ -1,17 +1,36 @@
 # ParkWatch — Agent Instructions
 
 ## Project Status
-**Pre-code**: Only README + LICENSE exist. No package.json, src/, or config files yet.
+**Initialized**: Next.js 14 + Supabase project is set up and running.
 
-## Tech Stack (from README)
-- **Frontend**: React.js / Next.js
-- **Styling**: Tailwind CSS
-- **Backend**: Supabase or Firebase (both documented, pick one)
-- **Database**: PostgreSQL (Supabase) / Cloud Firestore (Firebase)
-- **Storage**: Supabase Storage / Firebase Storage
-- **Auth**: Supabase Auth / Firebase Authentication
+## Tech Stack (confirmed)
+- **Frontend**: Next.js 14 (App Router, TypeScript)
+- **Styling**: Tailwind CSS v4
+- **Backend**: Supabase (PostgreSQL + Realtime + Storage + Auth)
+- **Database**: PostgreSQL (Supabase)
+- **Storage**: Supabase Storage (bucket: `violations`)
+- **Auth**: Supabase Auth (anonymous, client-side)
+- **Client SDK**: `@supabase/supabase-js`
 
-## Planned Structure
+## Running the Project
+```bash
+npm install         # install deps (run once)
+npm run dev         # starts Turbopack dev server on http://localhost:3000
+```
+
+### Mobile Testing
+- Connect laptop + phone to same Wi-Fi
+- Access: `http://<local-ip>:3000`
+- Camera `getUserMedia()` works on local LAN IP in dev
+
+### Env vars verified in `.env.local`:
+```
+NEXT_PUBLIC_SUPABASE_URL=https://atnpdrgbofkmracfsybe.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_G8nhCJiBAnnBRfVse6u1oA_ZLQTgtU0
+NEXT_PUBLIC_STORAGE_BUCKET=violations
+```
+
+## Project Structure
 ```
 ParkWatch/
 ├── public/
@@ -22,47 +41,53 @@ ParkWatch/
 │   │   ├── CameraCapture.jsx
 │   │   ├── ReportForm.jsx
 │   │   └── ViolationFeed.jsx
+│   ├── app/
+│   │   ├── page.tsx       # Home page
+│   │   └── layout.tsx     # Root layout
 │   ├── config/
-│   │   └── backend.js        # Firebase/Supabase config
+│   │   └── supabase.js    # Supabase client config
 │   ├── App.jsx
-│   └── index.css
-├── .env.local
+│   └── index.css          # Tailwind @directives
+├── .env.local             # your secrets (gitignored)
+├── .env.example           # template — commit this
 ├── package.json
+├── tailwind.config.js
+├── postcss.config.js
+├── tsconfig.json
 └── README.md
 ```
 
-## Setup Commands (once initialized)
-```bash
-npm install          # or yarn install
-npm run dev          # starts dev server on localhost:3000
-```
-
-## Required Environment Variables (.env.local)
-```
-NEXT_PUBLIC_BACKEND_URL=
-NEXT_PUBLIC_STORAGE_BUCKET=
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-```
-
-## Mobile Testing
-- Run dev server, access via `http://<local-ip>:3000` from phone on same Wi-Fi
-- Camera API requires HTTPS or localhost — works on local LAN IP in dev
-
 ## Key Architectural Notes
-- **Mobile-first**: Camera capture uses `getUserMedia()` (rear camera preferred)
-- **Backend choice not finalized**: README documents both Supabase and Firebase — decide before implementing
-- **Auth**: Anonymous or simple auth for reporting; no user accounts in MVP
-- **Storage**: Photos uploaded to Supabase Storage or Firebase Storage
-- **Feed**: Real-time subscription to violations table/collection
+- **App Router**: Next.js `app/` directory with `page.tsx`
+- **Supabase client**: Initialized in `src/config/supabase.js` — use `supabase.from('violations')` for queries
+- **Storage**: Photos uploaded to Supabase Storage bucket `violations` (create this bucket in the dashboard)
+- **Auth**: Anonymous — `supabase.auth.signInAnonymously()`; no user accounts in MVP
+- **Real-time**: Subscribe to `violations` table changes for live feed
+- **Tailwind**: `src/index.css` includes `@tailwind base; @tailwind components; @tailwind utilities;`
+- **TypeScript**: Enabled via `tsconfig.json`; `.tsx` files in `src/`
 
 ## MVP Scope (from README)
-- One-tap camera capture
+- One-tap camera capture via `getUserMedia()`
 - Vehicle number + location + photo form
-- Live chronological feed
+- Live chronological feed (real-time supabase subscription)
 - <10 second report flow
 
-## Future Roadmap (not in scope yet)
-- ALPR (OCR), GPS geotagging, anonymous alerts, map view, community verification, admin dashboard, search/filters
+## Future Roadmap (post-MVP)
+- ALPR (OCR) for auto-filling vehicle number
+- GPS geotagging + interactive map
+- Anonymous vehicle alerts (WhatsApp/SMS/Email)
+- Community verification / spam reduction
+- Admin dashboard / moderation
+- Search & filters (by vehicle, location, date)
+
+## Commands
+| Action | Command |
+|--------|---------|
+| Install deps | `npm install` |
+| Dev server | `npm run dev` |
+| Build | `npm run build` |
+| Start production | `npm run start` |
+| Lint | `npm run lint` (if configured) |
+
+## Git Ignored
+`.env.local`, `node_modules/`, `.next/`, `out/`
