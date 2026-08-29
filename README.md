@@ -4,7 +4,7 @@ A lightweight, crowd-sourced web application designed to help communities report
 
 ---
 
-## ✨ Features
+## ✨ Planned Features
 
 ### 📸 One-Tap Camera Capture
 - Opens the device's rear camera on supported mobile browsers.
@@ -27,39 +27,35 @@ A lightweight, crowd-sourced web application designed to help communities report
 
 ---
 
-# 🛠 Tech Stack
+## 🛠 Tech Stack (Planned)
 
 | Layer | Technology |
 |--------|------------|
 | Frontend | React.js / Next.js |
 | Styling | Tailwind CSS |
-| Backend | Supabase / Firebase |
-| Database | PostgreSQL (Supabase) / Cloud Firestore |
+| Backend | Supabase **or** Firebase (choose one) |
+| Database | PostgreSQL (Supabase) / Cloud Firestore (Firebase) |
 | Storage | Supabase Storage / Firebase Storage |
 | Authentication | Supabase Auth / Firebase Authentication |
 
 ---
 
-# 📂 Project Structure
+## 📂 Planned Project Structure
 
 ```text
 ParkWatch/
 ├── public/
 │   ├── icons/
 │   └── images/
-│
 ├── src/
 │   ├── components/
 │   │   ├── CameraCapture.jsx      # Camera capture component
 │   │   ├── ReportForm.jsx         # Report submission form
 │   │   └── ViolationFeed.jsx      # Community dashboard
-│   │
 │   ├── config/
 │   │   └── backend.js             # Firebase/Supabase configuration
-│   │
 │   ├── App.jsx
 │   └── index.css
-│
 ├── .env.local
 ├── package.json
 └── README.md
@@ -67,109 +63,57 @@ ParkWatch/
 
 ---
 
-# 🚀 Getting Started
+## 🚀 Getting Started (After Initialization)
 
-## 1. Prerequisites
-
-Make sure you have installed:
-
+### 1. Prerequisites
 - Node.js (v18 or later)
 - npm or Yarn
 
----
-
-## 2. Clone the Repository
-
+### 2. Initialize the Project
 ```bash
-git clone https://github.com/yourusername/parkwatch-mvp.git
-
-cd parkwatch-mvp
+# Choose one:
+npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
+# OR
+npm init -y && npm install next react react-dom && npm install -D typescript @types/react @types/node tailwindcss
 ```
 
----
-
-## 3. Install Dependencies
-
-Using npm:
-
+### 3. Install Dependencies
 ```bash
 npm install
 ```
 
-Or using Yarn:
+### 4. Configure Environment Variables
+Create a `.env.local` file in the project root. **Pick one backend:**
 
-```bash
-yarn install
-```
-
----
-
-## 4. Configure Environment Variables
-
-Create a `.env.local` file in the project root.
-
+**Supabase:**
 ```env
-# Backend
-NEXT_PUBLIC_BACKEND_URL=your_backend_url
-
-# Storage
-NEXT_PUBLIC_STORAGE_BUCKET=your_storage_bucket
-
-# Supabase
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
-
-# Firebase
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_STORAGE_BUCKET=your_supabase_bucket
 ```
 
----
+**Firebase:**
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_STORAGE_BUCKET=your_firebase_bucket
+```
 
-## 5. Start the Development Server
-
-Using npm:
-
+### 5. Start the Development Server
 ```bash
 npm run dev
 ```
-
-Or using Yarn:
-
-```bash
-yarn dev
-```
-
-Open your browser and visit:
-
-```
-http://localhost:3000
-```
+Open `http://localhost:3000`
 
 ---
 
-# 📱 Mobile Testing
-
-To test the camera functionality on your smartphone:
-
-1. Connect your laptop and phone to the same Wi-Fi network.
-2. Find your computer's local IP address.
-3. Open:
-
-```
-http://<your-local-ip>:3000
-```
-
-Example:
-
-```
-http://192.168.1.15:3000
-```
+## 📱 Mobile Testing
+- Run dev server, access via `http://<local-ip>:3000` from phone on same Wi-Fi
+- Camera API requires HTTPS or localhost — works on local LAN IP in dev
 
 ---
 
-# 📖 How It Works
-
+## 📖 How It Works (Planned Flow)
 1. Open ParkWatch.
 2. Capture a photo of the obstructing vehicle.
 3. Enter the vehicle's license plate number.
@@ -179,8 +123,7 @@ http://192.168.1.15:3000
 
 ---
 
-# 🎯 MVP Goals
-
+## 🎯 MVP Goals
 - Fast reporting process
 - Community-driven reporting
 - Mobile-first experience
@@ -189,84 +132,29 @@ http://192.168.1.15:3000
 
 ---
 
-# 🔮 Future Roadmap
-
-## 🚘 Automatic License Plate Recognition (ALPR)
-
-- OCR-powered number plate detection
-- Automatically fills the vehicle number
-
-## 📍 GPS Geotagging
-
-- Automatically capture device location
-- Display reports on an interactive map
-
-## 🔔 Anonymous Vehicle Alerts
-
-- Notify vehicle owners through:
-  - WhatsApp
-  - SMS
-  - Email
-
-## 🗺 Interactive Map
-
-- Live map showing reported parking violations.
-
-## 👍 Community Verification
-
-- Allow users to confirm reports.
-- Reduce spam and false reports.
-
-## 🚨 Admin Dashboard
-
-- Report moderation
-- Spam removal
-- Analytics
-
-## 🔍 Search & Filters
-
-- Search by vehicle number
-- Filter by location
-- Filter by date
+## 🔮 Future Roadmap (Post-MVP)
+- **ALPR (OCR)**: Automatic license plate recognition
+- **GPS Geotagging**: Auto-capture location, interactive map
+- **Anonymous Alerts**: Notify owners via WhatsApp/SMS/Email
+- **Community Verification**: Users confirm reports, reduce spam
+- **Admin Dashboard**: Moderation, analytics
+- **Search & Filters**: By vehicle, location, date
 
 ---
 
-# 🤝 Contributing
-
-Contributions are welcome!
-
-1. Fork the repository.
-2. Create a feature branch.
-
-```bash
-git checkout -b feature/new-feature
-```
-
-3. Commit your changes.
-
-```bash
-git commit -m "Add new feature"
-```
-
-4. Push your branch.
-
-```bash
-git push origin feature/new-feature
-```
-
-5. Open a Pull Request.
+## 🤝 Contributing
+Contributions welcome once the project is initialized!
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -m "Add new feature"`
+4. Push branch: `git push origin feature/new-feature`
+5. Open a Pull Request
 
 ---
 
-# 📜 License
-
+## 📜 License
 This project is licensed under the MIT License.
 
 ---
 
-# ⭐ Support
-
-If you found this project helpful, please consider giving it a ⭐ on GitHub. Your support helps improve and grow the project.
-
----
 Made with ❤️ to help build safer, obstruction-free streets through community participation.
