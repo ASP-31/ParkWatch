@@ -85,6 +85,12 @@ const CameraCapture = ({ onCapture }) => {
       setError(null);
       setMode('starting');
       const next = override || facingMode;
+      let timedOut = false;
+      const timer = setTimeout(() => {
+        timedOut = true;
+        setMode('idle');
+        setError('Camera is taking too long to start. Please try again.');
+      }, 15000);
       try {
         if (streamRef.current) {
           streamRef.current.getTracks().forEach((track) => track.stop());
@@ -94,13 +100,19 @@ const CameraCapture = ({ onCapture }) => {
           video: { facingMode: next },
           audio: false,
         });
+        clearTimeout(timer);
+        if (timedOut) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
         streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-          setMode('live');
+          videoRef.current.play().catch(() => {});
         }
+        setMode('live');
       } catch (err) {
+        clearTimeout(timer);
         setMode('idle');
         setError(
           err && err.name === 'NotAllowedError'
@@ -163,55 +175,64 @@ const CameraCapture = ({ onCapture }) => {
         </div>
       )}
 
-      {mode === 'starting' && (
-        <div className="flex aspect-video w-full items-center justify-center rounded-3xl bg-slate-900 ring-1 ring-slate-800">
-          <div className="flex flex-col items-center gap-3 text-slate-400">
+      <div
+        className={`relative aspect-video w-full overflow-hidden rounded-3xl bg-slate-900 ring-1 ${
+          mode === 'live'
+            ? 'shadow-xl ring-slate-900/10'
+            : mode === 'starting'
+              ? 'ring-slate-800'
+              : 'hidden'
+        }`}
+      >
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          className={`h-full w-full object-cover ${mode === 'live' ? '' : 'opacity-0'}`}
+        />
+
+        {mode === 'starting' && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-slate-400">
             <Spinner className="h-8 w-8" />
             <p className="text-sm">Starting camera…</p>
           </div>
-        </div>
-      )}
+        )}
 
-      {mode === 'live' && (
-        <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-xl ring-1 ring-slate-900/10">
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="h-full w-full object-cover"
-          />
-          <div className="pointer-events-none absolute inset-4 rounded-2xl border-2 border-white/30" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between bg-gradient-to-b from-black/60 to-transparent p-4">
-            <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur">
-              <span className="h-1.5 w-1.5 animate-live rounded-full bg-red-400" />
-              LIVE
-            </span>
-            <button
-              onClick={stopCamera}
-              aria-label="Close camera"
-              className="rounded-full bg-white/15 p-2 text-white backdrop-blur transition hover:bg-white/25 active:scale-90"
-            >
-              <CloseIcon className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-8 bg-gradient-to-t from-black/70 to-transparent p-4">
-            <button
-              onClick={switchCamera}
-              aria-label="Switch camera"
-              className="rounded-full bg-white/15 p-3 text-white backdrop-blur transition hover:bg-white/25 active:scale-90"
-            >
-              <RefreshIcon className="h-5 w-5" />
-            </button>
-            <button
-              onClick={capturePhoto}
-              aria-label="Capture photo"
-              className="h-16 w-16 rounded-full border-4 border-white bg-white/90 text-slate-900 shadow-lg transition hover:bg-white active:scale-90"
-            />
-            <span className="w-12" aria-hidden="true" />
-          </div>
-        </div>
-      )}
+        {mode === 'live' && (
+          <>
+            <div className="pointer-events-none absolute inset-4 rounded-2xl border-2 border-white/30" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between bg-gradient-to-b from-black/60 to-transparent p-4">
+              <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur">
+                <span className="h-1.5 w-1.5 animate-live rounded-full bg-red-400" />
+                LIVE
+              </span>
+              <button
+                onClick={stopCamera}
+                aria-label="Close camera"
+                className="rounded-full bg-white/15 p-2 text-white backdrop-blur transition hover:bg-white/25 active:scale-90"
+              >
+                <CloseIcon className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-8 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <button
+                onClick={switchCamera}
+                aria-label="Switch camera"
+                className="rounded-full bg-white/15 p-3 text-white backdrop-blur transition hover:bg-white/25 active:scale-90"
+              >
+                <RefreshIcon className="h-5 w-5" />
+              </button>
+              <button
+                onClick={capturePhoto}
+                aria-label="Capture photo"
+                className="h-16 w-16 rounded-full border-4 border-white bg-white/90 text-slate-900 shadow-lg transition hover:bg-white active:scale-90"
+              />
+              <span className="w-12" aria-hidden="true" />
+            </div>
+          </>
+        )}
+      </div>
 
       {error && (
         <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-600">
