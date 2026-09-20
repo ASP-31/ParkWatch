@@ -1,4 +1,2 @@
-/* src/index.css — include Tailwind directives */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/index.css — Tailwind v4 entry */
+@import "tailwindcss";
