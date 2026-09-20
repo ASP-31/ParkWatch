@@ -58,6 +58,7 @@ ParkWatch/
 ```
 
 ## Key Architectural Notes
+- **Backend schema**: `violations` table + storage bucket + RLS policies are defined in `supabase/migrations/0001_initial_schema.sql` (version-safe, re-runnable). Run once in the Supabase SQL Editor.
 - **App Router**: Next.js `app/` directory with `page.tsx`
 - **Supabase client**: Initialized in `src/config/supabase.js` — use `supabase.from('violations')` for queries
 - **Storage**: Photos uploaded to Supabase Storage bucket `violations` (create this bucket in the dashboard)

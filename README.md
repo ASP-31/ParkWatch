@@ -105,7 +105,21 @@ NEXT_PUBLIC_STORAGE_BUCKET=violations
 
 The `SUPABASE_SECRET_KEY` is **not** needed for the client — only use it in server API routes if required.
 
-### 5. Mobile Testing
+### 5. Supabase Backend Setup
+One-time setup on your Supabase project (dashboard → **SQL Editor**), or locally via the
+Supabase CLI:
+
+```bash
+supabase db push
+```
+
+Manual option — paste `supabase/migrations/0001_initial_schema.sql` into the SQL Editor and run it.
+This creates:
+- the `violations` table (RLS-enabled)
+- read/insert policies for anonymous reporters
+- the public `violations` storage bucket + its access policies
+
+### 6. Mobile Testing
 - Connect laptop and phone to the same Wi-Fi
 - Access via `http://<local-ip>:3000`
 - Camera API works on local LAN IP in dev
